@@ -1,8 +1,41 @@
 test
 <div style="color:red">我是王家</div>
-<button class="cool-btn">各系統設備</button>
+<div class="btn-group">
+  <button class="cool-btn">按鈕1</button>
+  <button class="cool-btn">按鈕2</button>
+  <button class="cool-btn">按鈕3</button>
+  <button class="cool-btn">按鈕4</button>
+  <button class="cool-btn">按鈕5</button>
+</div>
 
 <style>
+.btn-group {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* 依瀏覽器螢幕方向自動切換按鈕排列 */
+@media (orientation: landscape) {
+  .btn-group {
+    /* 橫向：按鈕直排在左側 */
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100vh;
+    justify-content: flex-start;
+  }
+}
+@media (orientation: portrait) {
+  .btn-group {
+    /* 直向：按鈕橫排在上方 */
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100vw;
+    justify-content: flex-start;
+  }
+}
 .cool-btn {
   background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
   color: #fff;
@@ -19,6 +52,4 @@ test
 .cool-btn:hover {
   transform: scale(1.08) rotate(-2deg);
   box-shadow: 0 8px 30px rgba(221,36,118,0.3);
-  background: linear-gradient(90deg, #dd2476 0%, #ff512f 100%);
-}
-</style>
+  background: linear-gradient(90deg, #dd2476 0%, #ff512f
