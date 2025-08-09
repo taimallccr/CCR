@@ -7,6 +7,43 @@ test
   <button class="cool-btn">按鈕4</button>
   <button class="cool-btn">按鈕5</button>
 </div>
+<div id="output"></div>
+
+<script>
+fetch('CCR_Data/CHSYS AND POWER POINT LOG.CSV')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('無法讀取檔案：' + response.statusText);
+        }
+        return response.text();
+    })
+    .then(csvText => {
+        const rows = csvText.split('\n').map(row => row.split(','));
+        const output = document.getElementById('output');
+
+        const table = document.createElement('table');
+        table.border = '1';
+
+        rows.forEach((row, rowIndex) => {
+            const tr = document.createElement('tr');
+            row.forEach(cell => {
+                const td = document.createElement(rowIndex === 0 ? 'th' : 'td');
+                td.textContent = cell.trim();
+                tr.appendChild(td);
+            });
+            table.appendChild(tr);
+        });
+
+        output.appendChild(table);
+    })
+    .catch(error => {
+        document.getElementById('output').textContent = '錯誤：' + error.message;
+    });
+
+
+  
+</script>
+
 
 <style>
 .btn-group {
