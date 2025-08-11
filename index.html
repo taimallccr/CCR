@@ -1,88 +1,70 @@
-test
-<div style="color:red">我是王家</div>
-<div class="btn-group">
-  <button class="cool-btn">按鈕1</button>
-  <button class="cool-btn">按鈕2</button>
-  <button class="cool-btn">按鈕3</button>
-  <button class="cool-btn">按鈕4</button>
-  <button class="cool-btn">按鈕5</button>
-</div>
-<div id="output"></div>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSV 資料表格</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h1>CSV 資料表格顯示</h1>
+  <div id="csv-table">載入中...</div>
 
-<script>
-        // 假設伺服器上有這個檔案，並且 URL 正確
-        fetch('http://your-server.com/CCR_Data/CHSYS AND POWER POINT LOG.CSV')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('無法讀取檔案：' + response.statusText);
-                }
-                return response.text();
-            })
-            .then(csvText => {
-                const rows = csvText.split('\n').map(row => row.split(','));
-                const output = document.getElementById('output');
-                const table = document.createElement('table');
-                table.border = '1';
-                rows.forEach((row, rowIndex) => {
-                    const tr = document.createElement('tr');
-                    row.forEach(cell => {
-                        const td = document.createElement(rowIndex === 0 ? 'th' : 'td');
-                        td.textContent = cell.trim();
-                        tr.appendChild(td);
-                    });
-                    table.appendChild(tr);
-                });
-                output.innerHTML = ''; // 清除「讀取中...」
-                output.appendChild(table);
-            })
-            .catch(error => {
-                document.getElementById('output').textContent = '錯誤：' + error.message;
-            });
-    </script>
+  <script>
+    // 設定 CSV 檔案的相對路徑
+    const csvFilePath = 'CCR_Data/CHSYS_AND_POWER_POINT_LOG.csv';
 
+    fetch(csvFilePath)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('讀取失敗：' + response.statusText);
+        }
+        return response.text();
+      })
+      .then(csvText => {
+        const parsedData = Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true
+        });
 
-<style>
-.btn-group {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 10px;
-  margin-top: 10px;
-}
+        const data = parsedData.data;
+        const headers = parsedData.meta.fields;
 
-/* 依瀏覽器螢幕方向自動切換按鈕排列 */
-@media (orientation: landscape) {
-  .btn-group {
-    /* 橫向：按鈕直排在左側 */
-    flex-direction: column;
-    align-items: flex-start;
-    height: 100vh;
-    justify-content: flex-start;
-  }
-}
-@media (orientation: portrait) {
-  .btn-group {
-    /* 直向：按鈕橫排在上方 */
-    flex-direction: row;
-    align-items: flex-start;
-    width: 100vw;
-    justify-content: flex-start;
-  }
-}
-.cool-btn {
-  background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
-  color: #fff;
-  border: none;
-  border-radius: 30px;
-  padding: 15px 40px;
-  font-size: 1.2em;
-  font-weight: bold;
-  box-shadow: 0 4px 15px rgba(221,36,118,0.2);
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  outline: none;
-}
-.cool-btn:hover {
-  transform: scale(1.08) rotate(-2deg);
-  box-shadow: 0 8px 30px rgba(221,36,118,0.3);
-  background: linear-gradient(90deg, #dd2476 0%, #ff512f
+        let tableHtml = '<table><thead><tr>';
+        headers.forEach(header => {
+          tableHtml += `<th>${header}</th>`;
+        });
+        tableHtml += '</tr></thead><tbody>';
+
+        data.forEach(row => {
+          tableHtml += '<tr>';
+          headers.forEach(header => {
+            tableHtml += `<td>${row[header]}</td>`;
+          });
+          tableHtml += '</tr>';
+        });
+
+        tableHtml += '</tbody></table>';
+        document.getElementById('csv-table').innerHTML = tableHtml;
+      })
+      .catch(error => {
+        document.getElementById('csv-table').innerHTML = '錯誤：無法讀取 CSV 檔案。';
+        console.error(error);
+      });
+  </script>
+</body>
+</html>
