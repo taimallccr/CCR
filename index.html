@@ -21,50 +21,364 @@
   </style>
 </head>
 <body>
-  <h1>CSV 資料表格顯示</h1>
-  <div id="csv-table">載入中...</div>
-
-  <script>
-    // 設定 CSV 檔案的相對路徑
-    const csvFilePath = 'CCR_Data/CHSYS AND POWER POINT LOG.CSV';
-
-    fetch(csvFilePath)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('讀取失敗：' + response.statusText);
+    <h1>台茂中央監控系統即時數據顯示</h1>
+    <style>
+        .parent {
+          display: flex;
+          gap: 20px;
+          flex-wrap: wrap;
         }
-        return response.text();
-      })
-      .then(csvText => {
-        const parsedData = Papa.parse(csvText, {
-          header: true,
-          skipEmptyLines: true
+
+        .parent > div {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .parent > div > div {
+          background-color: #f0f0f0;
+          border: 1px solid #ccc;
+          padding: 10px 15px;
+          border-radius: 8px;
+          text-align: center;
+          font-size: 14px;
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
+        }
+
+        .parent > div > div:hover {
+          background-color: #4a90e2;
+          color: white;
+          border-color: #357ab8;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .parent > div > div:active {
+          transform: translateY(0);
+          box-shadow: none;
+        }
+
+        /* 被選中的按鈕 */
+        .parent > div > div.active {
+          background-color: #4a90e2;
+          color: white;
+          border-color: #357ab8;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+    </style>
+    <div  class="parent">
+        <div>
+            <div>原始數據</div>
+            <div>機電看板</div>
+        </div>
+        <div>
+            <div>公共戶</div>
+            <div>商場戶</div>
+            <div>地下層商場戶</div>
+        </div>
+        <div >      
+            <div>RF空調用電</div>
+            <div>B2F空調用電</div>
+        </div>  
+        <div >
+            <div>RF冰水主機系統</div>
+            <div>B2F冰水主機系統</div>
+        </div>
+                
+    </div>
+    <!-- 選擇顯示 -->
+    <div id="selected-display" style="margin-top:15px; font-weight:bold;">
+      目前您選擇了：全部數據
+    </div>
+    <script>
+        document.querySelectorAll('.parent > div > div').forEach(button => {
+            button.addEventListener('click', () => {
+                // 清除其他按鈕的 active
+                document.querySelectorAll('.parent > div > div').forEach(btn => {
+                  btn.classList.remove('active');
+                });
+
+                // 設定當前按鈕 active
+                button.classList.add('active');
+
+                // 更新顯示
+                document.getElementById('selected-display').textContent =
+                  '目前您選擇了：' + button.textContent;
+
+                //選擇了項目
+                if (button.textContent=="原始數據"){
+                    document.getElementById('AllData').style.display = 'block';
+                } else {
+                    document.getElementById('AllData').style.display = 'none';
+                }
+                //選擇了項目 公共戶   MGBAB2
+                if (button.textContent=="公共戶"){
+                    document.getElementById('MGCBAB2').style.display = 'block';
+                } else {
+                    document.getElementById('MGCBAB2').style.display = 'none';
+                }
+                //選擇了項目 商場戶   MGBB
+                if (button.textContent=="商場戶"){
+                    document.getElementById('MGCBB').style.display = 'block';
+                } else {
+                    document.getElementById('MGCBB').style.display = 'none';
+                }
+                //選擇了項目 地下層商場戶   MGBB2
+                if (button.textContent=="地下層商場戶"){
+                    document.getElementById('MGCB2').style.display = 'block';
+                } else {
+                    document.getElementById('MGCB2').style.display = 'none';
+                }
+                
+                
+                
+                
+            });
         });
+    </script>
+    
+  
+    <div id="csv-table">載入中...</div>
 
-        const data = parsedData.data;
-        const headers = parsedData.meta.fields;
+    <script>
+      const csvFilePath = 'CCR_Data/CHSYS AND POWER POINT LOG.CSV';
 
-        let tableHtml = '<table><thead><tr>';
-        headers.forEach(header => {
-          tableHtml += `<th>${header}</th>`;
+      fetch(csvFilePath)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('讀取失敗：' + response.statusText);
+          }
+
+          // 取得最後更新時間（如果伺服器有回傳）
+          const lastModified = response.headers.get('Last-Modified');
+          if (lastModified) {
+            const date = new Date(lastModified);
+            // 在表格前面加一行顯示
+            document.getElementById('csv-table').innerHTML =
+              `<div>數擄更新時間：${date.toLocaleString()}</div>`;
+          }
+
+          return response.arrayBuffer(); // 用 ArrayBuffer 讀原始位元
+        })
+        .then(buffer => {
+            // 嘗試用 Big5 解碼，如果你的 CSV 其實是 UTF-8，這裡可以改 'utf-8'
+            const decoder = new TextDecoder('big5'); 
+            const csvText = decoder.decode(buffer);
+
+            const parsedData = Papa.parse(csvText, {
+            header: true,
+            skipEmptyLines: true
+            });
+
+            const data = parsedData.data;
+            const headers = parsedData.meta.fields;
+
+            /*   *************************************************** 
+                                    原始數據 
+                 ***************************************************   */
+            let tableHtml = '<table id="AllData"><thead><tr>';
+//            headers.forEach(header => {
+//                tableHtml += `<th>${header}</th>`;
+//            });          
+            tableHtml += `<th>變數名稱</th>`; 
+            tableHtml += `<th></th>`; 
+            tableHtml += `<th></th>`; 
+            tableHtml += `<th>說明</th>`; 
+            tableHtml += `<th>數值</th>`; 
+            tableHtml += `<th>單位</th>`; 
+            tableHtml += `<th>備註</th>`; 
+          
+            tableHtml += '</tr></thead><tbody>';
+            data.forEach(row => {
+                // 先取第一個欄位的值
+                const firstValue = row[headers[0]];
+                // 如果第一個欄位包含 "***"，就直接跳過這筆資料
+                if (firstValue && firstValue.includes('***')) {
+                    return;
+                }
+                tableHtml += '<tr>';
+                headers.forEach(header => {
+                    tableHtml += `<td>${row[header]}</td>`;
+                });
+                tableHtml += '</tr>';
+            });
+            tableHtml += '</tbody></table>';
+          
+
+            /*   ***************************************************
+                                        公共戶  
+                 ***************************************************   */                
+            tableHtml += '<table id="MGCBAB2"><thead><tr>';
+//            headers.forEach(header => {
+//                tableHtml += `<th>${header}</th>`;
+//            });          
+            tableHtml += `<th>變數名稱</th>`; 
+            tableHtml += `<th></th>`; 
+            tableHtml += `<th></th>`; 
+            tableHtml += `<th>說明</th>`; 
+            tableHtml += `<th>數值</th>`; 
+            tableHtml += `<th>單位</th>`; 
+            tableHtml += `<th>備註</th>`; 
+            tableHtml += '</tr></thead><tbody>';
+            data.forEach(row => {
+                // 先取第一個欄位的值
+                let firstValue = row[headers[0]];
+                // 如果第一個欄位包含 "***"，就直接跳過這筆資料
+                if (firstValue && firstValue.includes('***')) {
+                    return;
+                }                
+                //過濾
+                let ishave = boolean = false;                
+                if (firstValue){
+                    if (firstValue==('MGCBAB2.KWH')) { ishave=true; }
+                    if (firstValue==('MGCBAB2:KW')) { ishave=true; }
+                    if (firstValue==('MLAB2-1.KWH')) { ishave=true; }
+                    if (firstValue==('MLAB2-1:KW')) { ishave=true; }
+                    if (firstValue==('MLAB2-2.KWH')) { ishave=true; }
+                    if (firstValue==('MLAB2-2:KW')) { ishave=true; }
+                    if (firstValue==('EMLAB2-1.KWH')) { ishave=true; }
+                    if (firstValue==('EMLAB2-1:KW')) { ishave=true; }
+                    if (firstValue==('MGCBARF.KWH')) { ishave=true; }
+                    if (firstValue==('MGCBARF:KW')) { ishave=true; }                    
+                    if (firstValue==('MPA1:KWH')) { ishave=true; }
+                    if (firstValue==('MPA1:KW')) { ishave=true; }                    
+                    if (firstValue==('MPA2:KWH')) { ishave=true; }
+                    if (firstValue==('MPA2:KW')) { ishave=true; }                    
+                    if (firstValue==('MLARF-1:KWH')) { ishave=true; }
+                    if (firstValue==('MLARF-1:KW')) { ishave=true; }
+                    if (firstValue==('MPARF:KWH')) { ishave=true; }
+                    if (firstValue==('MPARF:KW')) { ishave=true; }                     
+                    if (firstValue==('ACMP-1:KWH')) { ishave=true; }
+                    if (firstValue==('ACMP-1:KW')) { ishave=true; } 
+                    if (firstValue==('ACMP-2:KWH')) { ishave=true; }
+                    if (firstValue==('ACMP-2:KW')) { ishave=true; }                     
+                }                  
+                
+                if (ishave){
+                    tableHtml += '<tr>';
+                    headers.forEach(header => {
+                        tableHtml += `<td>${row[header]}</td>`;
+                    });
+                    tableHtml += '</tr>';
+                }                 
+                
+            });
+            tableHtml += '</tbody></table>'; 
+          
+          
+            /*   ***************************************************
+                                        商場戶  
+                 ***************************************************   */                
+            tableHtml += '<table id="MGCBB"><thead><tr>';
+//            headers.forEach(header => {
+//                tableHtml += `<th>${header}</th>`;
+//            });          
+            tableHtml += `<th>變數名稱</th>`; 
+            tableHtml += `<th></th>`; 
+            tableHtml += `<th></th>`; 
+            tableHtml += `<th>說明</th>`; 
+            tableHtml += `<th>數值</th>`; 
+            tableHtml += `<th>單位</th>`; 
+            tableHtml += `<th>備註</th>`; 
+            tableHtml += '</tr></thead><tbody>';
+            data.forEach(row => {
+                // 先取第一個欄位的值
+                firstValue = row[headers[0]];
+                // 如果第一個欄位包含 "***"，就直接跳過這筆資料
+                if (firstValue && firstValue.includes('***')) {
+                    return;
+                }                
+                //過濾
+                let ishave = boolean = false;                
+                if (firstValue){
+                    if (firstValue==('MGCBB.KWH')) { ishave=true; }
+                    if (firstValue==('MGCBB:KW')) { ishave=true; }
+                    if (firstValue==('MLB1-1:KWH')) { ishave=true; }
+                    if (firstValue==('MLB1-1:KW')) { ishave=true; }
+                    if (firstValue==('MLB2-1:KWH')) { ishave=true; }
+                    if (firstValue==('MLB2-1:KW')) { ishave=true; }
+                    if (firstValue==('MLB3-1:KWH')) { ishave=true; }
+                    if (firstValue==('MLB3-1:KW')) { ishave=true; }
+                    if (firstValue==('MLB4-1:KWH')) { ishave=true; }
+                    if (firstValue==('MLB4-1:KW')) { ishave=true; }
+                                      
+                }                  
+                
+                if (ishave){
+                    tableHtml += '<tr>';
+                    headers.forEach(header => {
+                        tableHtml += `<td>${row[header]}</td>`;
+                    });
+                    tableHtml += '</tr>';
+                }                 
+                
+            });
+            tableHtml += '</tbody></table>';    
+          
+          
+            /*   ***************************************************
+                                        地下商場戶  
+                 ***************************************************   */                
+            tableHtml += '<table id="MGCB2"><thead><tr>';
+//            headers.forEach(header => {
+//                tableHtml += `<th>${header}</th>`;
+//            });          
+            tableHtml += `<th>變數名稱</th>`; 
+            tableHtml += `<th></th>`; 
+            tableHtml += `<th></th>`; 
+            tableHtml += `<th>說明</th>`; 
+            tableHtml += `<th>數值</th>`; 
+            tableHtml += `<th>單位</th>`; 
+            tableHtml += `<th>備註</th>`; 
+            tableHtml += '</tr></thead><tbody>';
+            data.forEach(row => {
+                // 先取第一個欄位的值
+                firstValue = row[headers[0]];
+                // 如果第一個欄位包含 "***"，就直接跳過這筆資料
+                if (firstValue && firstValue.includes('***')) {
+                    return;
+                }                
+                //過濾
+                let ishave = boolean = false;                
+                if (firstValue){
+                    if (firstValue==('GCB1:KWH')) { ishave=true; }
+                    if (firstValue==('GCB1:KW')) { ishave=true; }
+                    if (firstValue==('GCB2:KWH')) { ishave=true; }
+                    if (firstValue==('GCB2:KW')) { ishave=true; }
+                    if (firstValue==('PM:KWH')) { ishave=true; }
+                    if (firstValue==('PM:KW')) { ishave=true; }
+                    if (firstValue==('PAC:KWH')) { ishave=true; }
+                    if (firstValue==('PAC:KW')) { ishave=true; }                   
+                                      
+                }                  
+                
+                if (ishave){
+                    tableHtml += '<tr>';
+                    headers.forEach(header => {
+                        tableHtml += `<td>${row[header]}</td>`;
+                    });
+                    tableHtml += '</tr>';
+                }                 
+                
+            });
+            tableHtml += '</tbody></table>';    
+          
+
+
+            document.getElementById('csv-table').innerHTML +=
+                   '<iframe src="tt.html" width="100%" height="200px"></iframe>';
+            document.getElementById('csv-table').innerHTML += tableHtml;
+            
+          
+          
+        })
+        .catch(error => {
+          document.getElementById('csv-table').innerHTML = '錯誤：無法讀取 CSV 檔案。';
+          console.error(error);
         });
-        tableHtml += '</tr></thead><tbody>';
+    </script>
 
-        data.forEach(row => {
-          tableHtml += '<tr>';
-          headers.forEach(header => {
-            tableHtml += `<td>${row[header]}</td>`;
-          });
-          tableHtml += '</tr>';
-        });
-
-        tableHtml += '</tbody></table>';
-        document.getElementById('csv-table').innerHTML = tableHtml;
-      })
-      .catch(error => {
-        document.getElementById('csv-table').innerHTML = '錯誤：無法讀取 CSV 檔案。';
-        console.error(error);
-      });
-  </script>
 </body>
 </html>
