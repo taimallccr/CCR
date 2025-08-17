@@ -21,7 +21,30 @@
   </style>
 </head>
 <body>
-    <h1>台茂中央監控系統即時數據顯示</h1>
+    <h1>台茂監控系統即時數據顯示</h1>
+    <script>
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+                expires = "; expires=" + date.toUTCString();
+            }
+            //document.cookie = `${name}=${value || ""}${expires}; path=/`;
+            document.cookie = 'page=12345678';
+            
+            document.getElementById("page").innerHTML = value;
+        }
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+        function deleteCookie(name) {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        }        
+    </script>
     <style>
         .parent {
           display: flex;
@@ -86,7 +109,9 @@
             <div>RF冰水主機系統</div>
             <div>B2F冰水主機系統</div>
         </div>
-                
+        <div id="page" >ddddddd            
+        </div>   
+        <div id="page2" >eeeeeee</div>
     </div>
     <!-- 選擇顯示 -->
     <div id="selected-display" style="margin-top:15px; font-weight:bold;">
@@ -110,30 +135,34 @@
                 //選擇了項目
                 if (button.textContent=="原始數據"){
                     document.getElementById('AllData').style.display = 'block';
+                    setCookie("page", "原始數據", 7); // 設定 1 天有效
                 } else {
                     document.getElementById('AllData').style.display = 'none';
                 }
                 //選擇了項目 公共戶   MGBAB2
                 if (button.textContent=="公共戶"){
                     document.getElementById('MGCBAB2').style.display = 'block';
+                    setCookie("page", "公共戶", 1); // 設定 1 天有效
                 } else {
                     document.getElementById('MGCBAB2').style.display = 'none';
                 }
                 //選擇了項目 商場戶   MGBB
                 if (button.textContent=="商場戶"){
                     document.getElementById('MGCBB').style.display = 'block';
+                    setCookie("page", "商場戶", 1); // 設定 1 天有效
                 } else {
                     document.getElementById('MGCBB').style.display = 'none';
                 }
                 //選擇了項目 地下層商場戶   MGBB2
                 if (button.textContent=="地下層商場戶"){
                     document.getElementById('MGCB2').style.display = 'block';
+                    setCookie("page", "地下層商場戶", 1); // 設定 1 天有效
                 } else {
                     document.getElementById('MGCB2').style.display = 'none';
                 }
                 
                 
-                
+                document.getElementById("page2").innerHTML = 'cookie=' + getCookie("page");
                 
             });
         });
