@@ -21,7 +21,7 @@
   </style>
 </head>
 <body>
-    <h1>台茂監控系統即時數據顯示0</h1>
+    <h1>台茂監控系統即時數據顯示1</h1>
     <script>
         function setCookie(name, value, days) {
             let expires = "";
@@ -134,6 +134,8 @@
                 // 更新顯示
                 document.getElementById('selected-display').textContent =
                   '目前您選擇了：' + button.textContent;
+                
+                let nowpage = getCookie("page");
 
                 //選擇了項目
                 if (button.textContent=="原始數據"){
@@ -141,6 +143,9 @@
                     setCookie("page", "原始數據", 7); // 設定 1 天有效
                 } else {
                     document.getElementById('AllData').style.display = 'none';
+                    if (nowpage==="原始數據"){
+                        document.getElementById('AllData').style.display = 'block';
+                    }
                 }
                 //選擇了項目 公共戶   MGBAB2
                 if (button.textContent=="公共戶"){
@@ -148,6 +153,9 @@
                     setCookie("page", "公共戶", 1); // 設定 1 天有效
                 } else {
                     document.getElementById('MGCBAB2').style.display = 'none';
+                    if (nowpage==="公共戶"){  
+                        document.getElementById('MGCBAB2').style.display = 'block';
+                    }
                 }
                 //選擇了項目 商場戶   MGBB
                 if (button.textContent=="商場戶"){
@@ -415,35 +423,35 @@
     
     <script>
         //網頁完成後執行(不等圖片載完成)
-        //document.addEventListener('DOMContentLoaded', function () {
-        //window.addEventListener('load', function () {    
-        document.addEventListener('DOMContentLoaded', function () {
-            let nowpage = getCookie("page");
-            
-            if (nowpage==="原始數據"){
-                const el = document.getElementById('AllData');
-                if (el) el.style.display = 'block';
-                document.getElementById("page4").innerHTML = '原始數據';
-            }
-            if (nowpage==="公共戶"){                
-                const el = document.getElementById('MGCBAB2');
-                if (el) el.style.display = 'block';
-                document.getElementById("page4").innerHTML = '公共戶';
-            }
-            if (nowpage==="商場戶"){                
-                const el = document.getElementById('MGCBB');
-                if (el) el.style.display = 'block';  
-                document.getElementById("page4").innerHTML = '商場戶';
-            }
-            if (nowpage==="地下層商場戶"){                
-                const el = document.getElementById('MGCB2');
-                if (el) el.style.display = 'block';    
-                document.getElementById("page4").innerHTML = '地下層商場戶';
-            }
-            
-            document.getElementById("page3").innerHTML = `這${nowpage}`;
-            
-        });
+//        //document.addEventListener('DOMContentLoaded', function () {
+//        //window.addEventListener('load', function () {    
+//        document.addEventListener('DOMContentLoaded', function () {
+//            let nowpage = getCookie("page");
+//            
+//            if (nowpage==="原始數據"){
+//                const el = document.getElementById('AllData');
+//                if (el) el.style.display = 'block';
+//                document.getElementById("page4").innerHTML = '原始數據';
+//            }
+//            if (nowpage==="公共戶"){                
+//                const el = document.getElementById('MGCBAB2');
+//                if (el) el.style.display = 'block';
+//                document.getElementById("page4").innerHTML = '公共戶';
+//            }
+//            if (nowpage==="商場戶"){                
+//                const el = document.getElementById('MGCBB');
+//                if (el) el.style.display = 'block';  
+//                document.getElementById("page4").innerHTML = '商場戶';
+//            }
+//            if (nowpage==="地下層商場戶"){                
+//                const el = document.getElementById('MGCB2');
+//                if (el) el.style.display = 'block';    
+//                document.getElementById("page4").innerHTML = '地下層商場戶';
+//            }
+//            
+//            document.getElementById("page3").innerHTML = `這${nowpage}`;
+//            
+//        });
     </script>
 
 </body>
