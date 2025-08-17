@@ -414,7 +414,8 @@
     
     <script>
         //網頁完成後執行(不等圖片載完成)
-        document.addEventListener('DOMContentLoaded', function () {
+        //document.addEventListener('DOMContentLoaded', function () {
+        window.addEventListener('load', function () {
             let nowpage;
             nowpage = getCookie("page");
             document.getElementById("page3").innerHTML = `${nowpage}`;
