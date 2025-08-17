@@ -121,6 +121,8 @@
       目前您選擇了：全部數據
     </div>
     <script>
+        let nowpage = getCookie("page");
+        
         document.querySelectorAll('.parent > div > div').forEach(button => {
             button.addEventListener('click', () => {
                 // 清除其他按鈕的 active
@@ -133,9 +135,8 @@
 
                 // 更新顯示
                 document.getElementById('selected-display').textContent =
-                  '目前您選擇了：' + button.textContent;
+                  '目前您選擇了：' + button.textContent;               
                 
-                let nowpage = getCookie("page");
 
                 //選擇了項目
                 if (button.textContent=="原始數據"){
