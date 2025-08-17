@@ -21,7 +21,7 @@
   </style>
 </head>
 <body>
-    <h1>台茂監控系統即時數據顯示1</h1>
+    <h1>台茂監控系統即時數據顯示2</h1>
     <script>
         function setCookie(name, value, days) {
             let expires = "";
@@ -120,8 +120,7 @@
     <div id="selected-display" style="margin-top:15px; font-weight:bold;">
       目前您選擇了：全部數據
     </div>
-    <script>
-        let nowpage = getCookie("page");
+    <script>       
         
         document.querySelectorAll('.parent > div > div').forEach(button => {
             button.addEventListener('click', () => {
@@ -143,20 +142,14 @@
                     document.getElementById('AllData').style.display = 'block';
                     setCookie("page", "原始數據", 7); // 設定 1 天有效
                 } else {
-                    document.getElementById('AllData').style.display = 'none';
-                    if (nowpage==="原始數據"){
-                        document.getElementById('AllData').style.display = 'block';
-                    }
+                    document.getElementById('AllData').style.display = 'none'; 
                 }
                 //選擇了項目 公共戶   MGBAB2
                 if (button.textContent=="公共戶"){
                     document.getElementById('MGCBAB2').style.display = 'block';
                     setCookie("page", "公共戶", 1); // 設定 1 天有效
                 } else {
-                    document.getElementById('MGCBAB2').style.display = 'none';
-                    if (nowpage==="公共戶"){  
-                        document.getElementById('MGCBAB2').style.display = 'block';
-                    }
+                    document.getElementById('MGCBAB2').style.display = 'none';  
                 }
                 //選擇了項目 商場戶   MGBB
                 if (button.textContent=="商場戶"){
