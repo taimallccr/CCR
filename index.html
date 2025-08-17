@@ -416,23 +416,22 @@
         //網頁完成後執行(不等圖片載完成)
         //document.addEventListener('DOMContentLoaded', function () {
         window.addEventListener('load', function () {        
-            let nowpage;
-            nowpage = getCookie("page");
+            let nowpage = getCookie("page");
             
-            if (nowpage=="原始數據"){
+            if (nowpage==="原始數據"){
                 document.getElementById('AllData').style.display = 'block';
             }
-            if (nowpage=="公共戶"){
+            if (nowpage==="公共戶"){
                 document.getElementById('MGCBAB2').style.display = 'block';
             }
-            if (nowpage=="商場戶"){
+            if (nowpage==="商場戶"){
                 document.getElementById('MGCBB').style.display = 'block';
             }
-            if (nowpage=="地下層商場戶"){
+            if (nowpage==="地下層商場戶"){
                 document.getElementById('MGCB2').style.display = 'block';
             }
             
-            document.getElementById("page3").innerHTML = `${nowpage}`;
+            document.getElementById("page3").innerHTML = `這${nowpage}`;
         });
     </script>
 
