@@ -113,6 +113,7 @@
         <div id="page" >ddddddd            
         </div>   
         <div id="page2" >eeeeeee</div>
+        <div id="page3" ></div>
     </div>
     <!-- 選擇顯示 -->
     <div id="selected-display" style="margin-top:15px; font-weight:bold;">
@@ -208,7 +209,7 @@
             /*   *************************************************** 
                                     原始數據 
                  ***************************************************   */
-            let tableHtml = '<table id="AllData"><thead><tr>';
+            let tableHtml = '<table id="AllData" style="display:none;"><thead><tr>';
 //            headers.forEach(header => {
 //                tableHtml += `<th>${header}</th>`;
 //            });          
@@ -240,7 +241,7 @@
             /*   ***************************************************
                                         公共戶  
                  ***************************************************   */                
-            tableHtml += '<table id="MGCBAB2"><thead><tr>';
+            tableHtml += '<table id="MGCBAB2" style="display:none;"><thead><tr>';
 //            headers.forEach(header => {
 //                tableHtml += `<th>${header}</th>`;
 //            });          
@@ -301,7 +302,7 @@
             /*   ***************************************************
                                         商場戶  
                  ***************************************************   */                
-            tableHtml += '<table id="MGCBB"><thead><tr>';
+            tableHtml += '<table id="MGCBB" style="display:none;"><thead><tr>';
 //            headers.forEach(header => {
 //                tableHtml += `<th>${header}</th>`;
 //            });          
@@ -351,7 +352,7 @@
             /*   ***************************************************
                                         地下商場戶  
                  ***************************************************   */                
-            tableHtml += '<table id="MGCB2"><thead><tr>';
+            tableHtml += '<table id="MGCB2" style="display:none;"><thead><tr>';
 //            headers.forEach(header => {
 //                tableHtml += `<th>${header}</th>`;
 //            });          
@@ -407,6 +408,17 @@
         .catch(error => {
           document.getElementById('csv-table').innerHTML = '錯誤：無法讀取 CSV 檔案。';
           console.error(error);
+        });
+    </script>
+    
+    
+    <script>
+        //網頁完成後執行(不等圖片載完成)
+        document.addEventListener('DOMContentLoaded', function () {
+            let nowpage;
+            nowpage = getCookie("page");
+            document.getElementById("page3").innerHTML = `${nowpage}`;
+            
         });
     </script>
 
