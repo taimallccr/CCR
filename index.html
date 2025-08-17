@@ -21,7 +21,7 @@
   </style>
 </head>
 <body>
-    <h1>台茂監控系統即時數據顯示</h1>
+    <h1>台茂監控系統即時數據顯示2</h1>
     <script>
         function setCookie(name, value, days) {
             let expires = "";
@@ -415,10 +415,10 @@
     <script>
         //網頁完成後執行(不等圖片載完成)
         //document.addEventListener('DOMContentLoaded', function () {
-        window.addEventListener('load', function () {
+        window.addEventListener('load', function () {        
             let nowpage;
             nowpage = getCookie("page");
-            document.getElementById("page3").innerHTML = `${nowpage}`;
+            
             if (nowpage=="原始數據"){
                 document.getElementById('AllData').style.display = 'block';
             }
@@ -432,6 +432,7 @@
                 document.getElementById('MGCB2').style.display = 'block';
             }
             
+            document.getElementById("page3").innerHTML = `${nowpage}`;
         });
     </script>
 
