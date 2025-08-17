@@ -21,7 +21,7 @@
   </style>
 </head>
 <body>
-    <h1>台茂監控系統即時數據顯示2</h1>
+    <h1>台茂監控系統即時數據顯示4</h1>
     <script>
         function setCookie(name, value, days) {
             let expires = "";
@@ -121,6 +121,8 @@
       目前您選擇了：全部數據
     </div>
     <script>       
+        
+        let nowpage = getCookie("page");
         
         document.querySelectorAll('.parent > div > div').forEach(button => {
             button.addEventListener('click', () => {
@@ -417,35 +419,35 @@
     
     <script>
         //網頁完成後執行(不等圖片載完成)
-//        //document.addEventListener('DOMContentLoaded', function () {
-//        //window.addEventListener('load', function () {    
-//        document.addEventListener('DOMContentLoaded', function () {
-//            let nowpage = getCookie("page");
-//            
-//            if (nowpage==="原始數據"){
-//                const el = document.getElementById('AllData');
-//                if (el) el.style.display = 'block';
-//                document.getElementById("page4").innerHTML = '原始數據';
-//            }
-//            if (nowpage==="公共戶"){                
-//                const el = document.getElementById('MGCBAB2');
-//                if (el) el.style.display = 'block';
-//                document.getElementById("page4").innerHTML = '公共戶';
-//            }
-//            if (nowpage==="商場戶"){                
-//                const el = document.getElementById('MGCBB');
-//                if (el) el.style.display = 'block';  
-//                document.getElementById("page4").innerHTML = '商場戶';
-//            }
-//            if (nowpage==="地下層商場戶"){                
-//                const el = document.getElementById('MGCB2');
-//                if (el) el.style.display = 'block';    
-//                document.getElementById("page4").innerHTML = '地下層商場戶';
-//            }
-//            
-//            document.getElementById("page3").innerHTML = `這${nowpage}`;
-//            
-//        });
+        //document.addEventListener('DOMContentLoaded', function () {
+        //window.addEventListener('load', function () {    
+        document.addEventListener('DOMContentLoaded', function () {
+            nowpage = getCookie("page");
+            
+            if (nowpage==="原始數據"){
+                const el = document.getElementById('AllData');
+                if (el) el.style.display = 'block';
+                document.getElementById("page4").innerHTML = '原始數據';
+            }
+            if (nowpage==="公共戶"){                
+                const el = document.getElementById('MGCBAB2');
+                if (el) el.style.display = 'block';
+                document.getElementById("page4").innerHTML = '公共戶';
+            }
+            if (nowpage==="商場戶"){                
+                const el = document.getElementById('MGCBB');
+                if (el) el.style.display = 'block';  
+                document.getElementById("page4").innerHTML = '商場戶';
+            }
+            if (nowpage==="地下層商場戶"){                
+                const el = document.getElementById('MGCB2');
+                if (el) el.style.display = 'block';    
+                document.getElementById("page4").innerHTML = '地下層商場戶';
+            }
+            
+            document.getElementById("page3").innerHTML = `這${nowpage}`;
+            
+        });
     </script>
 
 </body>
