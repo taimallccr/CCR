@@ -21,7 +21,7 @@
   </style>
 </head>
 <body>
-    <h1>台茂監控系統即時數據顯示3</h1>
+    <h1>台茂監控系統即時數據顯示0</h1>
     <script>
         function setCookie(name, value, days) {
             let expires = "";
@@ -409,6 +409,11 @@
             
           
           
+          
+            // 發出自訂事件
+            document.dispatchEvent(new Event('DivReady'));
+          
+          
         })
         .catch(error => {
           document.getElementById('csv-table').innerHTML = '錯誤：無法讀取 CSV 檔案。';
@@ -422,7 +427,8 @@
         //document.addEventListener('DOMContentLoaded', function () {
         //window.addEventListener('load', function () {    
         //document.addEventListener('DOMContentLoaded', function () {
-        document.addEventListener('DOMContentLoaded', function () {
+        //document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DivReady', function () {
             nowpage = getCookie("page");//?.trim();
             
             if (nowpage=="原始數據"){
