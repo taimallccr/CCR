@@ -418,6 +418,18 @@
             let nowpage;
             nowpage = getCookie("page");
             document.getElementById("page3").innerHTML = `${nowpage}`;
+            if (nowpage=="原始數據"){
+                document.getElementById('AllData').style.display = 'block';
+            }
+            if (nowpage=="公共戶"){
+                document.getElementById('MGCBAB2').style.display = 'block';
+            }
+            if (nowpage=="商場戶"){
+                document.getElementById('MGCBB').style.display = 'block';
+            }
+            if (nowpage=="地下層商場戶"){
+                document.getElementById('MGCB2').style.display = 'block';
+            }
             
         });
     </script>
