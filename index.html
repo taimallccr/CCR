@@ -21,7 +21,7 @@
   </style>
 </head>
 <body>
-    <h1>台茂監控系統即時數據顯示0</h1>
+    <h1>台茂監控系統即時數據顯示</h1>
     <script>
         function setCookie(name, value, days) {
             let expires = "";
@@ -110,11 +110,8 @@
             <div>RF冰水主機系統</div>
             <div>B2F冰水主機系統</div>
         </div>
-        <div id="page" >ddddddd            
-        </div>   
-        <div id="page2" >eeeeeee</div>
-        <div id="page3" ></div>
-        <div id="page4" >55</div>
+        
+        
     </div>
     <!-- 選擇顯示 -->
     <div id="selected-display" style="margin-top:15px; font-weight:bold;">
@@ -169,7 +166,7 @@
                 }
                 
                 
-                document.getElementById("page2").innerHTML = 'cookie=' + getCookie("page");
+                
                 
             });
         });
@@ -422,44 +419,25 @@
     </script>
     
     
-    <script>
-        //網頁完成後執行(不等圖片載完成)
-        //document.addEventListener('DOMContentLoaded', function () {
-        //window.addEventListener('load', function () {    
-        //document.addEventListener('DOMContentLoaded', function () {
-        //document.addEventListener('DOMContentLoaded', function () {
+    <script>        
         document.addEventListener('DivReady', function () {
             nowpage = getCookie("page");//?.trim();
             
             if (nowpage=="原始數據"){
                 const el = document.getElementById('AllData');
-                if (el){
-                    el.style.display = 'block';
-                    document.getElementById("page4").innerHTML = '原始數據';
-                } else {
-                   document.getElementById("page4").innerHTML = '無AllData';                 
-                }
+                if (el){    el.style.display = 'block';    }
             }
             if (nowpage=="公共戶"){                
                 const el = document.getElementById('MGCBAB2');
-                if (el) {
-                    el.style.display = 'block';
-                    document.getElementById("page4").innerHTML = '公共戶';
-                }
+                if (el) {     el.style.display = 'block';     }
             }
             if (nowpage=="商場戶"){                
                 const el = document.getElementById('MGCBB');
-                if (el) {
-                    el.style.display = 'block';  
-                    document.getElementById("page4").innerHTML = '商場戶';
-                }
+                if (el) {    el.style.display = 'block';      }
             }
             if (nowpage=="地下層商場戶"){                
                 const el = document.getElementById('MGCB2');
-                if (el) {
-                    el.style.display = 'block';    
-                    document.getElementById("page4").innerHTML = '地下層商場戶';
-                }
+                if (el) {  el.style.display = 'block';    }
             }
             
             document.getElementById("page3").innerHTML = `這${nowpage}`;
